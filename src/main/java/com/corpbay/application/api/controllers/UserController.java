@@ -41,4 +41,9 @@ public class UserController {
     public void updateUserById(@PathVariable("id") Long id, @RequestBody Users newUser) {
         userService.updateUserById(id, newUser);
     }
+
+    @PostMapping("/login")
+    public Boolean loginUser(@RequestBody Users user) {
+        return userService.checkUserLogin(user);
+    }
 }
