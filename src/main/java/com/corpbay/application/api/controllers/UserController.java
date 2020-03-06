@@ -26,12 +26,6 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/{id}")
-    public Users getUserById(@PathVariable("id") Long id) {
-        return userService.getUserById(id)
-                .orElse(null);
-    }
-
     @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable("id") Long id) {
         userService.deleteUserById(id);
@@ -45,5 +39,10 @@ public class UserController {
     @PostMapping("/login")
     public Boolean loginUser(@RequestBody Users user) {
         return userService.checkUserLogin(user);
+    }
+
+    @GetMapping("/{email}")
+    public Users getUserByEmail(@PathVariable("email") String email) {
+        return userService.getUserByEmail(email);
     }
 }

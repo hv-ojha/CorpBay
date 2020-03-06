@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 
@@ -22,22 +23,27 @@ public class Users {
 
     @Column(name="first_name")
     @JsonProperty("first_name")
+    @NotNull
     private String firstName;
 
     @Column(name="last_name")
     @JsonProperty("last_name")
+    @NotNull
     private String lastName;
 
     @Column(name="email")
     @JsonProperty("email")
+    @NotNull
     private String email;
 
     @Column(name="phone_number")
     @JsonProperty("phone_number")
+    @NotNull
     private String phoneNumber;
 
     @Column(name="organization")
     @JsonProperty("organization")
+    @NotNull
     private String organization;
 
     @Column(name="password")

@@ -14,13 +14,12 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     private final UserDao userDao;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserDao userDao, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserDao userDao) {
         this.userDao = userDao;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public void addUser(Users user) {
@@ -51,5 +50,9 @@ public class UserService {
     public boolean checkUserLogin(Users users) {
         Users user1 = userDao.findByEmail(users.getEmail());
         return bCryptPasswordEncoder.matches(users.getPassword(), user1.getPassword());
+    }
+
+    public Users getUserByEmail(String email) {
+        return userDao.findByEmail(email);
     }
 }
