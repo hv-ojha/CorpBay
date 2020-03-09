@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,20 +21,30 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public void addUser(Users user) {
+    public Users addUser(Users user) throws Exception {
+        if(userDao.findByEmail(user.getEmail()) != null)
+            throw new Exception("User already exist");
         user.setCreatedDate(new Date());
         user.setUpdateDate(new Date());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDao.save(user);
+        return user;
     }
 
-    public List<Users> getAllUsers() {
-        return new ArrayList<>(userDao.findAll());
+    public List<Users> getAllUsers() throws Exception {
+        List<Users> users =  userDao.findAll();
+        if(users.isEmpty())
+            throw new Exception("No User Exist");
+        return users;
     }
 
-    public Optional<Users> getUserById(Long id) {
-        return userDao.findById(id);
-    }
+//    public Users getUserById(Long id) throws Exception {
+//        Optional<Users> user = userDao.findById(id);
+//        if(!user.isPresent()) {
+//            throw new Exception("No User exist with this id");
+//        }
+//        return user.get();
+//    }
 
     public void deleteUserById(Long id) {
         userDao.deleteById(id);
@@ -47,12 +56,23 @@ public class UserService {
         userDao.save(newUser);
     }
 
-    public boolean checkUserLogin(Users users) {
+    public Users checkUserLogin(Users users) throws Exception {
         Users user1 = userDao.findByEmail(users.getEmail());
-        return bCryptPasswordEncoder.matches(users.getPassword(), user1.getPassword());
+        if(user1 == null)
+            throw new Exception("No user exist");
+        else {
+            if(bCryptPasswordEncoder.matches(users.getPassword(), user1.getPassword()))
+                return user1;
+            else
+                throw new Exception("Invalid Password");
+        }
     }
 
-    public Users getUserByEmail(String email) {
-        return userDao.findByEmail(email);
+    public Users getUserByEmail(String email) throws Exception {
+        Users user = userDao.findByEmail(email);
+        if(user == null)
+            throw new Exception("No user exist");
+        else
+            return user;
     }
 }

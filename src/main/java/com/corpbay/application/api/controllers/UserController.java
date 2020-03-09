@@ -3,6 +3,7 @@ package com.corpbay.application.api.controllers;
 import com.corpbay.application.api.models.Users;
 import com.corpbay.application.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -17,13 +18,21 @@ public class UserController {
     }
 
     @PostMapping
-    public void addUser(@RequestBody Users user) {
-        userService.addUser(user);
+    public ResponseEntity<Object> addUser(@RequestBody Users user) {
+         try {
+             return ResponseEntity.ok(userService.addUser(user));
+         } catch (Exception ex) {
+             return ResponseEntity.badRequest().body(ex.getMessage());
+         }
     }
 
     @GetMapping
-    public List<Users> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<Object> getAllUsers() {
+        try {
+            return ResponseEntity.ok(userService.getAllUsers());
+        } catch(Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -37,12 +46,20 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Boolean loginUser(@RequestBody Users user) {
-        return userService.checkUserLogin(user);
+    public ResponseEntity<Object> loginUser(@RequestBody Users user) {
+        try {
+            return ResponseEntity.ok(userService.checkUserLogin(user));
+        } catch(Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 
     @GetMapping("/{email}")
-    public Users getUserByEmail(@PathVariable("email") String email) {
-        return userService.getUserByEmail(email);
+    public ResponseEntity<Object> getUserByEmail(@PathVariable("email") String email) {
+        try {
+            return ResponseEntity.ok().body(userService.getUserByEmail(email));
+        } catch(Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 }
