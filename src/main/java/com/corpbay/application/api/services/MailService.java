@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 @Service
 public class MailService {
@@ -18,9 +20,9 @@ public class MailService {
         this.mailSender = javaMailSender;
     }
 
-    public boolean registrationMail(Users users) {
+    public boolean registrationMail(Users users) throws UnsupportedEncodingException {
         String subject = "Welcome to CorpBay! Verify you Email address";
-        String link = "http://corpbay-production-api.eba-w6uc5vhm.us-east-1.elasticbeanstalk.com/users/verify/" + users.getEmail() + "/"+ users.getPassword();
+        String link = "http://corpbay-production-api.eba-w6uc5vhm.us-east-1.elasticbeanstalk.com/users/verify?email=" + users.getEmail() + "&password="+ URLEncoder.encode(users.getPassword(),"UTF-8");
         String body = "<html>" +
                 "<body>" +
                 "<h1>Thank You " + users.getName() + "</h1>" +

@@ -6,6 +6,8 @@ import com.corpbay.application.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URLDecoder;
 import java.util.List;
 
 @RequestMapping("users")
@@ -71,9 +73,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("verify/{email}/{password}")
-    public ResponseEntity<Object> verifyUser(@PathVariable("email") String email, @PathVariable("password") String password) {
+    @GetMapping("verify")
+    public ResponseEntity<Object> verifyUser(@RequestParam("email") String email, @RequestParam("password") String password) {
         try {
+            URLDecoder.decode(password,"UTF-8");
             Users user = userService.getUserByEmailAndPassword(email, password);
             if(user.getVerified())
                 return ResponseEntity.ok("User Verified Successfully! Please login on your app");

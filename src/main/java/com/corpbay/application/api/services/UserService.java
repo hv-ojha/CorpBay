@@ -62,10 +62,14 @@ public class UserService {
         if(user1 == null)
             throw new Exception("No user exist");
         else {
-            if(bCryptPasswordEncoder.matches(users.getPassword(), user1.getPassword()))
+            if(bCryptPasswordEncoder.matches(users.getPassword(), user1.getPassword()) && user1.getVerified())
                 return user1;
-            else
-                throw new Exception("Invalid Password");
+            else {
+                if(!user1.getVerified())
+                    throw new Exception("Please Verify your email to login in the app");
+                else
+                    throw new Exception("Invalid Password");
+            }
         }
     }
 
