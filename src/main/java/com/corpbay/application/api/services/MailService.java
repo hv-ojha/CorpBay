@@ -1,9 +1,12 @@
 package com.corpbay.application.api.services;
 
+import com.corpbay.application.api.models.Users;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import javax.mail.Message;
+import javax.mail.internet.MimeMessage;
 
 @Service
 public class MailService {
@@ -15,16 +18,31 @@ public class MailService {
         this.mailSender = javaMailSender;
     }
 
+    public boolean registrationMail(Users users) {
+        String subject = "Welcome to CorpBay! Verify you Email address";
+        String link = "http://corpbay-production-api.eba-w6uc5vhm.us-east-1.elasticbeanstalk.com/users/verify/" + users.getEmail() + "/"+ users.getPassword();
+        String body = "<html>" +
+                "<body>" +
+                "<h1>Thank You " + users.getName() + "</h1>" +
+                "<p style='font-size:1.5em'>You have been successfully registered to CorpBay. Click on the below link to verify</p><br>" +
+                "<a href="+ link +" style='color:#fff;background-color:#28a745;border-color:#28a745;display:inline-block;font-weight:400;color:#212529;text-align:center;vertical-align:middle;cursor:pointer;'>" +
+                "Link to verify</a>" +
+                "</body>" +
+                "<html>";
+        return sendMail(users.getEmail(),subject,body);
+    }
+
     public boolean sendMail(String to, String subject, String body) {
         try {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(to);
+            MimeMessage mailMessage = mailSender.createMimeMessage();
+            mailMessage.addRecipients(Message.RecipientType.TO, to);
             mailMessage.setSubject(subject);
-            mailMessage.setText(body);
+            mailMessage.setContent(body,"text/html");
             mailSender.send(mailMessage);
             return true;
         } catch(Exception ex) {
-            throw ex;
+            System.out.println(ex.getMessage());
+            return false;
         }
     }
 }

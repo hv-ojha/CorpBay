@@ -1,6 +1,7 @@
 package com.corpbay.application.api.controllers;
 
 import com.corpbay.application.api.models.Users;
+import com.corpbay.application.api.services.MailService;
 import com.corpbay.application.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +13,23 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    private final MailService mailService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, MailService mailService) {
         this.userService = userService;
+        this.mailService = mailService;
     }
 
     @PostMapping
     public ResponseEntity<Object> addUser(@RequestBody Users user) {
          try {
-             return ResponseEntity.ok(userService.addUser(user));
+             Users registeredUser = userService.addUser(user);
+             boolean response = mailService.registrationMail(registeredUser);
+             return ResponseEntity.ok(registeredUser);
          } catch (Exception ex) {
+             System.out.println(ex.getMessage());
              return ResponseEntity.badRequest().body(ex.getMessage());
          }
     }
@@ -58,6 +66,19 @@ public class UserController {
     public ResponseEntity<Object> getUserByEmail(@PathVariable("email") String email) {
         try {
             return ResponseEntity.ok().body(userService.getUserByEmail(email));
+        } catch(Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("verify/{email}/{password}")
+    public ResponseEntity<Object> verifyUser(@PathVariable("email") String email, @PathVariable("password") String password) {
+        try {
+            Users user = userService.getUserByEmailAndPassword(email, password);
+            if(user.getVerified())
+                return ResponseEntity.ok("User Verified Successfully! Please login on your app");
+            else
+                return ResponseEntity.ok("Some undefined error occur please try after sometime");
         } catch(Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }

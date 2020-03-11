@@ -27,6 +27,7 @@ public class UserService {
         user.setCreatedDate(new Date());
         user.setUpdateDate(new Date());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setVerified(false);
         userDao.save(user);
         return user;
     }
@@ -74,5 +75,16 @@ public class UserService {
             throw new Exception("No user exist");
         else
             return user;
+    }
+
+    public Users getUserByEmailAndPassword(String email, String password) throws Exception {
+        Users user = userDao.findByEmailAndPassword(email,password);
+        if(user == null)
+            throw new Exception("No user exist");
+        else {
+            user.setVerified(true);
+            userDao.save(user);
+            return user;
+        }
     }
 }

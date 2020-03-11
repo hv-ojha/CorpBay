@@ -50,4 +50,7 @@ public class Users {
 
     @Column
     private Date updateDate;
+
+    @Column
+    private Boolean verified;
 }
