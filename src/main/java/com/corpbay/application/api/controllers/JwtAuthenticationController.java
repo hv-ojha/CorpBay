@@ -35,20 +35,23 @@ public class JwtAuthenticationController {
 
     @RequestMapping(value = "/users/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+        try {
+            authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 
-        authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
+            final UserDetails userDetails = userDetailsService
+                    .loadUserByUsername(authenticationRequest.getEmail());
 
-        final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(authenticationRequest.getEmail());
-
-        final String token = jwtTokenUtil.generateToken(userDetails);
-        System.out.println(userDetails.getUsername()+" is my name");
-        Users user = userService.getUserByEmail(userDetails.getUsername());
-        System.out.println(user);
-        Map<String, Object> mymap = new HashMap();
-        mymap.put("token",new JwtResponse(token).getToken());
-        mymap.put("user",user);
-        return ResponseEntity.ok(mymap);
+            final String token = jwtTokenUtil.generateToken(userDetails);
+            System.out.println(userDetails.getUsername()+" is my name");
+            Users user = userService.getUserByEmail(userDetails.getUsername());
+            System.out.println(user);
+            Map<String, Object> mymap = new HashMap();
+            mymap.put("token",new JwtResponse(token).getToken());
+            mymap.put("user",user);
+            return ResponseEntity.ok(mymap);
+        } catch(Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 
     private void authenticate(String username, String password) throws Exception {
