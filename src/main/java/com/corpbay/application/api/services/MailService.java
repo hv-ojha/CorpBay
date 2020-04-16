@@ -22,7 +22,7 @@ public class MailService {
 
     public boolean registrationMail(Users users) throws UnsupportedEncodingException {
         String subject = "Welcome to CorpBay! Verify you Email address";
-        String link = "http://corpbay-production-api.eba-w6uc5vhm.us-east-1.elasticbeanstalk.com/users/verify?email=" + users.getEmail() + "&password="+ URLEncoder.encode(users.getPassword(),"UTF-8");
+        String link = "http://corpbay.herokuapp.com/users/verify?email=" + users.getEmail() + "&password="+ URLEncoder.encode(users.getPassword(),"UTF-8");
         String body = "<html>" +
                 "<body>" +
                 "<h1>Thank You " + users.getName() + "</h1>" +
