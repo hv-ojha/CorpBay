@@ -29,6 +29,9 @@ public class MailService {
                 "<p style='font-size:1.5em'>You have been successfully registered to CorpBay. Click on the below link to verify</p><br>" +
                 "<a href="+ link +" style='color:#fff;background-color:#28a745;border-color:#28a745;display:inline-block;font-weight:400;color:#212529;text-align:center;vertical-align:middle;cursor:pointer;'>" +
                 "Link to verify</a>" +
+                "<br>" +
+                "<br>" +
+                "In case link don't work click here <a href="+ link +">"+ link +"</a>" +
                 "</body>" +
                 "<html>";
         return sendMail(users.getEmail(),subject,body);
