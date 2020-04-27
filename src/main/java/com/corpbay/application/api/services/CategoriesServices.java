@@ -1,6 +1,6 @@
 package com.corpbay.application.api.services;
 
-import com.corpbay.application.api.models.Categories;
+import com.corpbay.application.api.entity.Categories;
 import com.corpbay.application.api.repositories.CategoriesDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.corpbay.application.api.controllers;
 
-import com.corpbay.application.api.models.Users;
+import com.corpbay.application.api.entity.Users;
 import com.corpbay.application.api.services.MailService;
 import com.corpbay.application.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URLDecoder;
-import java.util.List;
 
 @RequestMapping("users")
 @RestController

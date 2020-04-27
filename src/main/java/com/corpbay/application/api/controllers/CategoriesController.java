@@ -1,6 +1,6 @@
 package com.corpbay.application.api.controllers;
 
-import com.corpbay.application.api.models.Categories;
+import com.corpbay.application.api.entity.Categories;
 import com.corpbay.application.api.services.CategoriesServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +38,15 @@ public class CategoriesController {
     public ResponseEntity<Object> getCategories(@PathVariable("id") Long id) {
         try {
             return ResponseEntity.ok(categoriesServices.getCategory(id));
+        } catch(Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteCategories(@PathVariable("id") Long id) {
+        try {
+            return ResponseEntity.ok(categoriesServices.deleteCategory(id));
         } catch(Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }

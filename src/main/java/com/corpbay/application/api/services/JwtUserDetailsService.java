@@ -1,6 +1,6 @@
 package com.corpbay.application.api.services;
 
-import com.corpbay.application.api.models.Users;
+import com.corpbay.application.api.entity.Users;
 import com.corpbay.application.api.repositories.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

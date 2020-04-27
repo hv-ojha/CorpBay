@@ -1,4 +1,4 @@
-package com.corpbay.application.api.models;
+package com.corpbay.application.api.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,9 +1,9 @@
 package com.corpbay.application.api.controllers;
 
 import com.corpbay.application.api.config.JwtTokenUtil;
-import com.corpbay.application.api.models.JwtRequest;
-import com.corpbay.application.api.models.JwtResponse;
-import com.corpbay.application.api.models.Users;
+import com.corpbay.application.api.entity.JwtRequest;
+import com.corpbay.application.api.entity.JwtResponse;
+import com.corpbay.application.api.entity.Users;
 import com.corpbay.application.api.services.JwtUserDetailsService;
 import com.corpbay.application.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

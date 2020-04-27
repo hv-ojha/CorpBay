@@ -1,14 +1,13 @@
 package com.corpbay.application.api.services;
 
 import com.corpbay.application.api.repositories.UserDao;
-import com.corpbay.application.api.models.Users;
+import com.corpbay.application.api.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {

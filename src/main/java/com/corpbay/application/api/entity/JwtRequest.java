@@ -1,4 +1,4 @@
-package com.corpbay.application.api.models;
+package com.corpbay.application.api.entity;
 
 import java.io.Serializable;
 
