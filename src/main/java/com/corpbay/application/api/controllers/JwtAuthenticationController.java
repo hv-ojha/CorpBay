@@ -1,11 +1,13 @@
 package com.corpbay.application.api.controllers;
 
 import com.corpbay.application.api.config.JwtTokenUtil;
+import com.corpbay.application.api.entity.Admin;
 import com.corpbay.application.api.entity.JwtRequest;
 import com.corpbay.application.api.entity.JwtResponse;
 import com.corpbay.application.api.entity.Users;
 import com.corpbay.application.api.services.AdminServices;
 import com.corpbay.application.api.services.JwtUserDetailsService;
+import com.corpbay.application.api.services.LoggedInDeviceServices;
 import com.corpbay.application.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +40,9 @@ public class JwtAuthenticationController {
     @Autowired
     private AdminServices adminServices;
 
+    @Autowired
+    private LoggedInDeviceServices loggedInDeviceServices;
+
     @RequestMapping(value = "/users/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest, HttpServletRequest request) throws Exception {
         try {
@@ -48,21 +53,13 @@ public class JwtAuthenticationController {
 
             final String token = jwtTokenUtil.generateToken(userDetails);
             System.out.println(userDetails.getUsername()+" is my name");
-//            System.out.println("Remote User: " + request.getRemoteUser());
-//            System.out.println("Remote Address: " + request.getRemoteAddr());
-//            System.out.println("Server name: " + request.getServerName());
-//            System.out.println("Locales: " + request.getLocales());
-//            System.out.println("Locale: " + request.getLocale());
-//            System.out.println("Local Address: " + request.getLocalAddr());
-//            System.out.println("Local Name: " + request.getLocalName());
-//            System.out.println("Local port: " + request.getLocalPort());
-//            System.out.println("Remote host: " + request.getRemoteHost());
-//            System.out.println("Remote port: " + request.getRemotePort());
             Object user;
             if(userDetails.getUsername().contains("@"))
                 user = userService.getUserByEmail(userDetails.getUsername());
-            else
+            else {
                 user = adminServices.getAdmin(userDetails.getUsername());
+                loggedInDeviceServices.addDevice(request, (Admin) user);
+            }
             System.out.println(user);
             Map<String, Object> mymap = new HashMap();
             mymap.put("token",new JwtResponse(token).getToken());
