@@ -53,4 +53,6 @@ public class Users {
 
     @Column
     private Boolean verified;
+
+    private Date lastLoginDate;
 }

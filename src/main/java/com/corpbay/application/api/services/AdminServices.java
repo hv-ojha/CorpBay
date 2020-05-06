@@ -53,4 +53,8 @@ public class AdminServices {
             throw new Exception("Incorrect password");
         }
     }
+    public Admin updateLoginTime(Admin admin) {
+        admin.setLastLoginDate(new Date());
+        return adminDao.save(admin);
+    }
 }

@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,18 +54,21 @@ public class JwtAuthenticationController {
 
             final String token = jwtTokenUtil.generateToken(userDetails);
             System.out.println(userDetails.getUsername()+" is my name");
-            Object user;
-            if(userDetails.getUsername().contains("@"))
-                user = userService.getUserByEmail(userDetails.getUsername());
-            else {
-                user = adminServices.getAdmin(userDetails.getUsername());
-                loggedInDeviceServices.addDevice(request, (Admin) user);
-            }
-            System.out.println(user);
             Map<String, Object> mymap = new HashMap();
+            if(userDetails.getUsername().contains("@")) {
+                Users user = userService.getUserByEmail(userDetails.getUsername());
+                user.setLastLoginDate(new Date());
+                userService.updateUserById(user.getId(),user);
+                loggedInDeviceServices.addDevice(request,userDetails.getUsername());
+                mymap.put("user",user);
+            }
+            else {
+                Admin user = adminServices.getAdmin(userDetails.getUsername());
+                user = adminServices.updateLoginTime(user);
+                loggedInDeviceServices.addDevice(request,userDetails.getUsername());
+                mymap.put("user",user);
+            }
             mymap.put("token",new JwtResponse(token).getToken());
-            mymap.put("user",user);
-//            mymap.put("values",request);
             return ResponseEntity.ok(mymap);
         } catch(Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

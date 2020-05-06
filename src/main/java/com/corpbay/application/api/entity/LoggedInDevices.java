@@ -5,9 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -17,22 +15,26 @@ import java.util.Date;
 @ToString
 public class LoggedInDevices {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
     private String remoteAddress;
 
-    @ManyToOne
-    private Admin admin;
+    private String user;
 
     private String remoteHost;
 
     private Integer remotePort;
 
-    private String locale;
+    private String operatingSystem;
 
-    private String localAddress;
+    private String operatingSystemType;
 
-    private Integer localPort;
+    private String deviceType;
 
-    private String localName;
+    private String browserName;
+
+    private String browserType;
 
     private Date loggedInTime;
 }

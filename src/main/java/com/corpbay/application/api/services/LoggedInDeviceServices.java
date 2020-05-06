@@ -3,6 +3,7 @@ package com.corpbay.application.api.services;
 import com.corpbay.application.api.entity.Admin;
 import com.corpbay.application.api.entity.LoggedInDevices;
 import com.corpbay.application.api.repositories.LoggedInDeviceDao;
+import eu.bitwalker.useragentutils.UserAgent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,24 @@ public class LoggedInDeviceServices {
         this.loggedInDeviceDao = loggedInDeviceDao;
     }
 
-    public LoggedInDevices addDevice(HttpServletRequest request, Admin admin) {
+    public LoggedInDevices addDevice(HttpServletRequest request, String user) {
         LoggedInDevices logged = new LoggedInDevices();
-        logged.setLocalAddress(request.getLocalAddr());
-        logged.setAdmin(admin);
-        logged.setLocale(request.getLocale().getDisplayCountry());
-        logged.setLocalName(request.getLocalName());
-        logged.setLocalPort(request.getLocalPort());
+
+        //Device Details
+        UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("user-agent"));
+        if(request.getHeader("user-agent").toString().contains("Android 10"))
+            logged.setOperatingSystem("Android 10");
+        else if(request.getHeader("user-agent").toString().contains("Android 9"))
+            logged.setOperatingSystem("Android 9");
+        else
+            logged.setOperatingSystem(userAgent.getOperatingSystem().getName());
+        logged.setOperatingSystemType(userAgent.getOperatingSystem().getGroup().getName());
+        logged.setDeviceType(userAgent.getOperatingSystem().getDeviceType().getName());
+        logged.setBrowserType(userAgent.getBrowser().getBrowserType().getName());
+        logged.setBrowserName(userAgent.getBrowser().getName());
+
+        // Header details
+        logged.setUser(user);
         logged.setLoggedInTime(new Date());
         logged.setRemoteAddress(request.getRemoteAddr());
         logged.setRemoteHost(request.getRemoteHost());

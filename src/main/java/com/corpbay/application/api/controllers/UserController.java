@@ -54,15 +54,6 @@ public class UserController {
         userService.updateUserById(id, newUser);
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<Object> loginUser(@RequestBody Users user) {
-//        try {
-//            return ResponseEntity.ok(userService.checkUserLogin(user));
-//        } catch(Exception ex) {
-//            return ResponseEntity.badRequest().body(ex.getMessage());
-//        }
-//    }
-
     @GetMapping("/{email}")
     public ResponseEntity<Object> getUserByEmail(@PathVariable("email") String email) {
         try {

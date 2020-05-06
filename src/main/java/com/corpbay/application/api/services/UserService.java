@@ -38,14 +38,6 @@ public class UserService {
         return users;
     }
 
-//    public Users getUserById(Long id) throws Exception {
-//        Optional<Users> user = userDao.findById(id);
-//        if(!user.isPresent()) {
-//            throw new Exception("No User exist with this id");
-//        }
-//        return user.get();
-//    }
-
     public void deleteUserById(Long id) {
         userDao.deleteById(id);
     }
