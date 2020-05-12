@@ -20,7 +20,7 @@ public class LoggedInDevices {
 
     private String remoteAddress;
 
-    private String user;
+    private String username;
 
     private String remoteHost;
 

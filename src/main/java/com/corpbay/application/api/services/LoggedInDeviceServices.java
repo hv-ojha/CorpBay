@@ -1,6 +1,5 @@
 package com.corpbay.application.api.services;
 
-import com.corpbay.application.api.entity.Admin;
 import com.corpbay.application.api.entity.LoggedInDevices;
 import com.corpbay.application.api.repositories.LoggedInDeviceDao;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -37,7 +36,7 @@ public class LoggedInDeviceServices {
         logged.setBrowserName(userAgent.getBrowser().getName());
 
         // Header details
-        logged.setUser(user);
+        logged.setUsername(user);
         logged.setLoggedInTime(new Date());
         logged.setRemoteAddress(request.getRemoteAddr());
         logged.setRemoteHost(request.getRemoteHost());
