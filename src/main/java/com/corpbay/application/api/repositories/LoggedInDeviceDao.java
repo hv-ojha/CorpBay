@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LoggedInDeviceDao extends JpaRepository<LoggedInDevices, String> {
+    LoggedInDevices findByRemoteAddress(String remoteAddress);
 }

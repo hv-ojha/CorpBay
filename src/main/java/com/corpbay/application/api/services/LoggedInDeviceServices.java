@@ -41,7 +41,13 @@ public class LoggedInDeviceServices {
         logged.setRemoteAddress(request.getRemoteAddr());
         logged.setRemoteHost(request.getRemoteHost());
         logged.setRemotePort(request.getRemotePort());
-        loggedInDeviceDao.save(logged);
+        LoggedInDevices l = loggedInDeviceDao.findByRemoteAddress(request.getRemoteAddr());
+        if(l != null && l.getUsername().equals(user) && l.getRemoteAddress().equals(request.getRemoteAddr())) {
+            l.setLoggedInTime(new Date());
+            loggedInDeviceDao.save(l);
+        }
+        else
+            loggedInDeviceDao.save(logged);
         return logged;
     }
 
